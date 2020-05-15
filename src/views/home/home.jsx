@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import P5Wrapper from "react-p5-wrapper";
+import React, { Component } from 'react';
+import P5Wrapper from 'react-p5-wrapper';
 // import sketch from "../../components/p5/sketchExample";
-import poseSketch from "../../components/p5/poseDetector";
+import poseSketch from '../../components/p5/poseDetector';
 
 class SketchExampleApp extends Component {
   constructor() {

@@ -7,7 +7,7 @@ export default function sketch(p) {
   };
 
   p.draw = () => {
-    p.background("orangered");
+    p.background('orangered');
     p.ellipse(150, 100, 100, 100);
   };
 

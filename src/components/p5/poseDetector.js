@@ -1,4 +1,4 @@
-import ml5 from "ml5";
+import ml5 from 'ml5';
 
 let canvas;
 let video;
@@ -7,7 +7,7 @@ let pose;
 let skeleton;
 
 function modelLoaded() {
-  console.log("poseNet ready");
+  console.log('poseNet ready');
 }
 
 function gotPoses(poses) {
@@ -24,7 +24,7 @@ export default function poseSketch(p) {
     video = p.createCapture(p.VIDEO);
     video.hide();
     poseNetModel = ml5.poseNet(video, modelLoaded);
-    poseNetModel.on("pose", gotPoses);
+    poseNetModel.on('pose', gotPoses);
   };
 
   p.draw = () => {
