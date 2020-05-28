@@ -4,6 +4,8 @@ let canvas;
 let video;
 let poseNetModel;
 let pose;
+let alto;
+let ancho;
 
 function modelLoaded() {
     console.log('poseNet ready');
@@ -18,8 +20,12 @@ function gotPoses(poses) {
 
 export default function zonas(p) {
     p.setup = () => {
-        canvas = p.createCanvas(640, 480);
+        alto = Math.round(p.windowHeight * 0.8);
+        ancho = alto * 4 / 3;
+        console.log(alto, ancho);
+        canvas = p.createCanvas(ancho, alto);
         video = p.createCapture(p.VIDEO);
+        video.size(ancho, alto);
         video.hide();
         poseNetModel = ml5.poseNet(video, modelLoaded);
         poseNetModel.on('pose', gotPoses);
@@ -32,27 +38,39 @@ export default function zonas(p) {
         if (canvas) {
             p.translate(video.width, 0);
             p.scale(-1, 1);
-            p.image(video, 0, 0, video.width, video.height);
+            p.image(video, 0, 0, ancho, alto);
 
             if (pose) {
                 let eyeR = pose.rightEye;
                 let eyeL = pose.leftEye;
                 let dist = p.dist(eyeR.x, eyeR.y, eyeL.x, eyeL.y);
+
+                let r = p.random(30, 111);
+                let g = p.random(90, 151);
+                let b = p.random(180, 241);
+
+                let d = Math.round(dist / (alto / 333));
                 // zona 1
-                if (dist >= 10 && dist <= 25) {
-                    let r = p.random(30, 91);
-                    let g = p.random(90, 131);
-                    let b = p.random(180, 241);
+                if (d >= 10 && d <= 15) {
                     p.push();
                     p.background(r, g, b, 120);
                     p.pop();
                 }
-
-
-                /* let textX = Math.round((eyeR.x + eyeL.x) / 2);
+                else {
+                    p.push();
+                    let textX = Math.round((eyeR.x + eyeL.x) / 2);
+                    let textY = Math.round((eyeR.y + eyeL.y) / 2);
+                    p.fill(r, g, b);
+                    p.circle(textX, textY, d);
+                    p.pop();
+                }
+                p.push();
+                let textX = Math.round((eyeR.x + eyeL.x) / 2);
                 let textY = Math.round((eyeR.y + eyeL.y) / 2);
-                p.textSize(64);
-                p.text(Math.round(dist), textX, textY); */
+                p.fill(r, g, b);
+                p.textSize(150);
+                p.text(d, textX, textY);
+                p.pop();
 
             }
         }
