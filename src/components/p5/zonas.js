@@ -6,7 +6,12 @@ let poseNetModel;
 let pose;
 let alto;
 let ancho;
-let state;
+let btn;
+
+let state = {
+    background: { r: 255, g: 255, b: 255 },
+    triangle: { r: 255, g: 255, b: 255 },
+};
 
 function modelLoaded() {
     console.log('poseNet ready');
@@ -33,8 +38,9 @@ export default function zonas(p) {
         p.angleMode(p.DEGREES);
         p.rectMode(p.CENTER);
         p.frameRate(24);
-
-        state = { r: 255, g: 255, b: 255 };
+        btn = document.createElement("button");
+        btn.textContent = "start recording";
+        document.body.appendChild(btn);
     };
 
     p.draw = () => {
@@ -50,64 +56,88 @@ export default function zonas(p) {
             p.text('x ' + ancho, ancho - 230, alto - 60);
 
             if (pose) {
-                let eyeR = pose.rightShoulder;
-                let eyeL = pose.leftShoulder;
-                let eyeDist = p.dist(eyeR.x, eyeR.y, eyeL.x, eyeL.y);
+                const {
+                    rightShoulder, leftShoulder,
+                    rightWrist, leftWrist,
+                    rightElbow, leftElbow,
+                    rightHip, leftHip,
+                    rightEye, leftEye,
+                    rigthEar, leftEar,
+                    nose } = pose;
+                let shoulderDist = p.dist(rightShoulder.x, rightShoulder.y, leftShoulder.x, leftShoulder.y);
 
-                p.fill(state.r, state.g, state.b);
+                p.fill(state.background.r, state.background.g, state.background.b);
                 p.circle(100, 100, 130);
 
-                // ver posición de muñecas
-                let WristR = pose.rightWrist;
-                let WristL = pose.leftWrist;
                 p.push();
                 /* p.fill(255, 130, 0);
                 p.stroke(3);
                 p.textSize(150);
                 // eje x
-                p.text(Math.round(WristR.y), WristR.x, WristR.y);
-                p.text(Math.round(WristL.y), WristL.x, WristL.y); */
+                p.text(Math.round(rightWrist.y), rightWrist.x, rightWrist.y);
+                p.text(Math.round(leftWrist.y), leftWrist.x, leftWrist.y); */
                 p.pop();
 
-                p.background(state.r, state.g, state.b, 140);
+                p.background(state.background.r, state.background.g, state.background.b, 140);
 
-                let d = Math.round(eyeDist / (alto / 333));
+                let d = Math.round(shoulderDist / (alto / 333));
                 // zona 1
-                if (d < 60) {
+                if (d < 75) {
                     p.push();
-                    state.r = Math.floor(pose.leftElbow.y % 256);
-                    state.g = Math.floor(pose.rightElbow.y % 256);
-                    state.b = Math.floor(pose.leftShoulder.x % 256);
+                    state.background.r = Math.floor(leftElbow.y % 256);
+                    state.background.g = Math.floor(rightElbow.y % 256);
+                    state.background.b = Math.floor(leftShoulder.x % 256);
 
-                    p.fill(state.r, state.g, state.b);
+                    p.fill(state.background.r, state.background.g, state.background.b);
                     p.stroke(3);
                     p.textSize(100);
                     p.text('Elige el color', 200, 150);
                     p.pop();
                 }
-                else {
+                // zona 2 al centro
+                else if (d >= 75 && d < 120) {
                     p.push();
-                    let textX = Math.round((eyeR.x + eyeL.x) / 2);
-                    let textY = Math.round((eyeR.y + eyeL.y) / 2);
-                    p.fill(state.r, state.g, state.b);
-                    p.circle(pose.leftWrist.x, pose.leftWrist.y, 130);
-                    p.circle(pose.rightWrist.x, pose.rightWrist.y, 130);
+                    let pelvisX = Math.round((rightHip.x + leftHip.x) / 2);
+                    let pelvisY = Math.round((rightHip.y + leftHip.y) / 2);
+
+                    state.triangle.r = Math.floor(leftElbow.y % 256);
+                    state.triangle.g = Math.floor(rightElbow.y % 256);
+                    state.triangle.b = Math.floor(leftShoulder.x % 256);
+                    p.noFill();
+                    p.stroke(p.color(state.triangle.r, state.triangle.g, state.triangle.b));
+                    p.strokeWeight(18);
+                    p.triangle(rightShoulder.x - 100, rightShoulder.y - 300,
+                        leftShoulder.x - 100, leftShoulder.y - 300,
+                        pelvisX - 100, pelvisY - 300);
+                    p.triangle(rightShoulder.x + 130, rightShoulder.y + 50,
+                        leftShoulder.x + 130, leftShoulder.y + 50,
+                        pelvisX + 130, pelvisY + 50);
+                    p.pop();
+                } // zona 3 más cerca
+                else if (d >= 120 && d < 200) {
+                    p.push();
+                    p.fill(state.background.r, state.background.g, state.background.b);
+                    p.circle(nose.x + 100, nose.y + 100, 100);
+                    p.circle(nose.x - 190, nose.y - 140, 100);
                     p.pop();
                 }
-                p.push();
-                let textX = Math.round((eyeR.x + eyeL.x) / 2);
-                let textY = Math.round((eyeR.y + eyeL.y) / 2);
-                /* p.fill(state.r, state.g, state.b);
+                else {
+                    p.push();
+                    p.fill(state.background.r, state.background.g, state.background.b);
+                    p.circle(leftWrist.x, leftWrist.y, 100);
+                    p.circle(rightWrist.x, rightWrist.y, 100);
+                    p.pop();
+                }
+                /* p.push();
+                let textX = Math.round((rightShoulder.x + leftShoulder.x) / 2);
+                let textY = Math.round((rightShoulder.y + leftShoulder.y) / 2);
+                p.fill(state.background.r, state.background.g, state.background.b);
                 p.stroke(3);
                 p.textSize(150);
-                p.text(d, textX, textY); */
+                p.text(d, textX, textY);
                 p.pop();
-
+ */
             }
         }
     };
 }
-
-/* zona 1: entre  10 y 15
-zona 2: 15 - 60
-zona 3: 60 - 150 */
