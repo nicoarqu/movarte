@@ -43,7 +43,7 @@ export default function zonas(p) {
         p.rectMode(p.CENTER);
         p.frameRate(24);
         btn = document.createElement("button");
-        btn.textContent = "start recording";
+        btn.textContent = "Tomar pantallazo";
         document.body.appendChild(btn);
         btn.onclick = () => screenshot(p);
     };
@@ -57,8 +57,8 @@ export default function zonas(p) {
             p.fill(255);
             p.stroke(3);
             p.textSize(40);
-            p.text('y ' + alto, ancho - 180, alto - 100);
-            p.text('x ' + ancho, ancho - 230, alto - 60);
+            /* p.text('y ' + alto, ancho - 180, alto - 100);
+            p.text('x ' + ancho, ancho - 230, alto - 60); */
 
             if (pose) {
                 const {
@@ -87,7 +87,7 @@ export default function zonas(p) {
 
                 let d = Math.round(shoulderDist / (alto / 333));
                 // zona 1
-                if (d < 75) {
+                if (d < 60) {
                     p.push();
                     state.background.r = Math.floor(leftElbow.y % 256);
                     state.background.g = Math.floor(rightElbow.y % 256);
@@ -100,7 +100,7 @@ export default function zonas(p) {
                     p.pop();
                 }
                 // zona 2 al centro
-                else if (d >= 75 && d < 120) {
+                else if (d >= 60 && d < 120) {
                     p.push();
                     let pelvisX = Math.round((rightHip.x + leftHip.x) / 2);
                     let pelvisY = Math.round((rightHip.y + leftHip.y) / 2);
@@ -121,14 +121,17 @@ export default function zonas(p) {
                 } // zona 3 más cerca
                 else if (d >= 120 && d < 200) {
                     p.push();
-                    p.fill(state.background.r, state.background.g, state.background.b);
-                    p.circle(nose.x + 100, nose.y + 100, 100);
-                    p.circle(nose.x - 190, nose.y - 140, 100);
+                    p.fill(state.triangle.r, state.triangle.g, state.triangle.b);
+                    for (let index = 0; index < 9; index++) {
+                        let randomX = p.random(-50, 50);
+                        let randomY = p.random(-80, 80);
+                        p.circle(nose.x + randomX * index, nose.y + randomY * index, 100);
+                    }
                     p.pop();
                 }
                 else {
                     p.push();
-                    p.fill(state.background.r, state.background.g, state.background.b);
+                    p.fill(state.triangle.r, state.triangle.g, state.triangle.b);
                     p.circle(leftWrist.x, leftWrist.y, 100);
                     p.circle(rightWrist.x, rightWrist.y, 100);
                     p.pop();

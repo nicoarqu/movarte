@@ -8,6 +8,7 @@ import trianguloMovimiento from '../../components/p5/trianguloMovimiento';
 const SketchExampleApp = () => {
   return (
     <div>
+      <h2>Mueve tu cuerpo</h2>
       <P5Wrapper sketch={zonas}></P5Wrapper>
     </div>
   );
