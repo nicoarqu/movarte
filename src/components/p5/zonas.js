@@ -24,6 +24,10 @@ function gotPoses(poses) {
     }
 }
 
+const screenshot = (p) => {
+    setTimeout(p.saveFrames('imagen', 'png', 1, 1), 10000);
+}
+
 export default function zonas(p) {
     p.setup = () => {
         alto = Math.round(p.windowHeight * 0.8);
@@ -41,6 +45,7 @@ export default function zonas(p) {
         btn = document.createElement("button");
         btn.textContent = "start recording";
         document.body.appendChild(btn);
+        btn.onclick = () => screenshot(p);
     };
 
     p.draw = () => {
