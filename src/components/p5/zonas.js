@@ -132,8 +132,15 @@ export default function zonas(p) {
                 else {
                     p.push();
                     p.fill(state.triangle.r, state.triangle.g, state.triangle.b);
-                    p.circle(leftWrist.x, leftWrist.y, 100);
-                    p.circle(rightWrist.x, rightWrist.y, 100);
+                    p.stroke(p.color(state.background.r, state.background.g, state.background.b));
+                    p.strokeWeight(16);
+                    for (let i = 10; i < 40; i += 10) {
+                        let bR = p.random(-d * 0.35, d * 0.55);
+                        let bX = rightEye.x - bR * i;
+                        let bY = rightEye.y - bR * i;
+                        p.translate(bX, bY);
+                        p.triangle(leftEye.x, leftEye.y, rightEye.x, rightEye.y, nose.x, nose.y);
+                    }
                     p.pop();
                 }
                 /* p.push();
