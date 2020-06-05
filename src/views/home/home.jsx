@@ -1,6 +1,6 @@
 import React from 'react';
 import P5Wrapper from 'react-p5-wrapper';
-import zones from '../../components/p5/zones';
+import zones from '../../components/sketches/zones';
 
 export const HomeApp = () => {
   return (
