@@ -4,24 +4,23 @@ let canvas;
 let video;
 let poseNetModel;
 let pose;
-let alto;
-let ancho;
+let height;
+let width;
 let btn;
 
+// state with stored user info
 let state = {
     background: { r: 255, g: 255, b: 255 },
-    triangle: { r: 255, g: 255, b: 255 },
+    hatch: { r: 255, g: 255, b: 255, distance: 0 },
+    triangle: { r: 255, g: 255, b: 255, x: 0, y: 0 },
+    circle: { r: 255, g: 255, b: 255, radius: 0 },
 };
 
-function modelLoaded() {
-    console.log('poseNet ready');
-}
+const modelLoaded = () => console.log('poseNet ready');
 
-function gotPoses(poses) {
+const gotPoses = (poses) => {
     // console.log(poses);
-    if (poses.length > 0) {
-        pose = poses[0].pose;
-    }
+    if (poses.length > 0) { pose = poses[0].pose }
 }
 
 const screenshot = (p) => {
@@ -30,18 +29,22 @@ const screenshot = (p) => {
 
 export default function zonas(p) {
     p.setup = () => {
-        alto = Math.round(p.windowHeight * 0.8);
-        ancho = alto * 4 / 3;
-        console.log(alto, ancho);
-        canvas = p.createCanvas(ancho, alto);
+        // set width, height proportional to windowHeight
+        height = Math.round(p.windowHeight * 0.8);
+        width = height * 4 / 3;
+        // video set in canvas using user webcam
+        canvas = p.createCanvas(width, height);
         video = p.createCapture(p.VIDEO);
-        video.size(ancho, alto);
+        video.size(width, height);
         video.hide();
+        // ml5 poseNet model
         poseNetModel = ml5.poseNet(video, modelLoaded);
         poseNetModel.on('pose', gotPoses);
+        // canvas configuration
         p.angleMode(p.DEGREES);
         p.rectMode(p.CENTER);
         p.frameRate(24);
+        // screenshot button
         btn = document.createElement("button");
         btn.textContent = "Tomar pantallazo";
         document.body.appendChild(btn);
@@ -50,75 +53,67 @@ export default function zonas(p) {
 
     p.draw = () => {
         if (canvas) {
-            /* p.translate(video.width, 0);
+            /* set mirrored version of video capture and canvas
+            p.translate(video.width, 0);
             p.scale(-1, 1); */
-            p.image(video, 0, 0, ancho, alto);
-
-            p.fill(255);
-            p.stroke(3);
-            p.textSize(40);
-            /* p.text('y ' + alto, ancho - 180, alto - 100);
-            p.text('x ' + ancho, ancho - 230, alto - 60); */
+            p.image(video, 0, 0, width, height);
 
             if (pose) {
+                // pose keypoints
                 const {
-                    rightShoulder, leftShoulder,
-                    rightWrist, leftWrist,
-                    rightElbow, leftElbow,
-                    rightHip, leftHip,
+                    nose,
                     rightEye, leftEye,
                     rigthEar, leftEar,
-                    nose } = pose;
+                    rightShoulder, leftShoulder,
+                    rightElbow, leftElbow,
+                    rightWrist, leftWrist,
+                    rightHip, leftHip,
+                    rightKnee, leftKnee,
+                    rightAnkle, leftAnkle
+                } = pose;
+
                 let shoulderDist = p.dist(rightShoulder.x, rightShoulder.y, leftShoulder.x, leftShoulder.y);
-
+                /* background color circle
                 p.fill(state.background.r, state.background.g, state.background.b);
-                p.circle(100, 100, 130);
-
-                p.push();
-                /* p.fill(255, 130, 0);
-                p.stroke(3);
-                p.textSize(150);
-                // eje x
-                p.text(Math.round(rightWrist.y), rightWrist.x, rightWrist.y);
-                p.text(Math.round(leftWrist.y), leftWrist.x, leftWrist.y); */
-                p.pop();
+                p.circle(100, 100, 130); */
 
                 p.background(state.background.r, state.background.g, state.background.b, 140);
 
-                let d = Math.round(shoulderDist / (alto / 333));
-                // zona 1
+                let d = Math.round(shoulderDist / (height / 333));
+                // background layer
                 if (d < 60) {
                     p.push();
+                    // background color picker
                     state.background.r = Math.floor(leftElbow.y % 256);
                     state.background.g = Math.floor(rightElbow.y % 256);
                     state.background.b = Math.floor(leftShoulder.x % 256);
-
+                    // instruction text
                     p.fill(state.background.r, state.background.g, state.background.b);
                     p.stroke(3);
                     p.textSize(100);
                     p.text('Elige el color', 200, 150);
                     p.pop();
                 }
-                // zona 2 al centro
+                // triangle layer
                 else if (d >= 60 && d < 120) {
                     p.push();
                     let pelvisX = Math.round((rightHip.x + leftHip.x) / 2);
                     let pelvisY = Math.round((rightHip.y + leftHip.y) / 2);
-
+                    // traingle color picker
                     state.triangle.r = Math.floor(leftElbow.y % 256);
                     state.triangle.g = Math.floor(rightElbow.y % 256);
                     state.triangle.b = Math.floor(leftShoulder.x % 256);
                     p.noFill();
                     p.stroke(p.color(state.triangle.r, state.triangle.g, state.triangle.b));
                     p.strokeWeight(18);
-                    p.triangle(rightShoulder.x - 100, rightShoulder.y - 300,
-                        leftShoulder.x - 100, leftShoulder.y - 300,
-                        pelvisX - 100, pelvisY - 300);
+                    p.triangle(rightShoulder.x, rightShoulder.y,
+                        leftShoulder.x, leftShoulder.y,
+                        pelvisX, pelvisY);
                     p.triangle(rightShoulder.x + 130, rightShoulder.y + 50,
                         leftShoulder.x + 130, leftShoulder.y + 50,
                         pelvisX + 130, pelvisY + 50);
                     p.pop();
-                } // zona 3 más cerca
+                } // moving traignles layer
                 else if (d >= 120 && d < 200) {
                     p.push();
                     p.fill(state.triangle.r, state.triangle.g, state.triangle.b);
@@ -129,7 +124,7 @@ export default function zonas(p) {
                     }
                     p.pop();
                 }
-                else {
+                else { // undefined layer
                     p.push();
                     p.fill(state.triangle.r, state.triangle.g, state.triangle.b);
                     p.stroke(p.color(state.background.r, state.background.g, state.background.b));
@@ -143,15 +138,6 @@ export default function zonas(p) {
                     }
                     p.pop();
                 }
-                /* p.push();
-                let textX = Math.round((rightShoulder.x + leftShoulder.x) / 2);
-                let textY = Math.round((rightShoulder.y + leftShoulder.y) / 2);
-                p.fill(state.background.r, state.background.g, state.background.b);
-                p.stroke(3);
-                p.textSize(150);
-                p.text(d, textX, textY);
-                p.pop();
- */
             }
         }
     };
