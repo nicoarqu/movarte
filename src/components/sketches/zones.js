@@ -1,4 +1,5 @@
 import ml5 from 'ml5';
+import { circles, simpleLines } from '../shapes';
 
 let canvas;
 let video;
@@ -27,7 +28,7 @@ const screenshot = (p) => {
     setTimeout(p.saveFrames('imagen', 'png', 1, 1), 10000);
 }
 
-export default function zonas(p) {
+export default function zones(p) {
     p.setup = () => {
         // set width, height proportional to windowHeight
         height = Math.round(p.windowHeight * 0.8);
