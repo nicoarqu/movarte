@@ -2,6 +2,7 @@
 import ml5 from 'ml5';
 import tinycolor from "tinycolor2";
 import { circles, simpleLines } from '../shapes';
+import { drawTriangle } from "../../utils/p5Functions";
 
 let canvas;
 let video;
@@ -101,7 +102,7 @@ export default function zones(p) {
 
                 let d = Math.round(shoulderDist / (height / 333));
                 // background layer
-                if (d < 60) {
+                if (d < 58) {
                     p.push();
                     // background color picker
                     state.background.color.r = Math.floor(leftElbow.y % 256);
@@ -116,10 +117,8 @@ export default function zones(p) {
                     p.pop();
                 }
                 // triangle layer
-                else if (d >= 60 && d < 120) {
+                else if (d >= 58 && d < 70) {
                     p.push();
-                    let pelvisX = Math.round((rightHip.x + leftHip.x) / 2);
-                    let pelvisY = Math.round((rightHip.y + leftHip.y) / 2);
                     // triangle color and position picker
                     state.triangle.tColor = state.background.tColor.complement();
                     // color asociado rgb
@@ -127,19 +126,14 @@ export default function zones(p) {
                     state.triangle.A.y = rightShoulder.y;
                     state.triangle.B.x = leftShoulder.x;
                     state.triangle.B.y = leftShoulder.y;
-                    state.triangle.C.x = pelvisY;
-                    state.triangle.C.y = pelvisY;
-                    p.noFill();
-                    p.stroke(p.color(state.triangle.tColor.toHexString()));
-                    p.strokeWeight(Math.floor(width * 0.01));
-                    p.triangle(rightShoulder.x, rightShoulder.y,
-                        leftShoulder.x, leftShoulder.y,
-                        pelvisX, pelvisY);
+                    state.triangle.C.x = Math.round((rightHip.x + leftHip.x) / 2);
+                    state.triangle.C.y = Math.round((rightHip.y + leftHip.y) / 2);
+                    drawTriangle(p, state, width);
                     p.pop();
                 } // moving triangles layer
-                else if (d >= 120 && d < 200) {
+                else if (d >= 70 && d < 200) {
                     p.push();
-                    p.fill(state.triangle.tColor.toHexString());
+                    drawTriangle(p, state, width);
                     for (let index = 0; index < 9; index++) {
                         let randomX = p.random(-50, 50);
                         let randomY = p.random(-80, 80);
@@ -149,6 +143,7 @@ export default function zones(p) {
                 }
                 else { // undefined layer
                     p.push();
+                    drawTriangle(p, state, width);
                     p.fill(state.triangle.tColor.toHexString());
                     p.stroke(p.color(state.triangle.tColor.toHexString()));
                     p.strokeWeight(16);
