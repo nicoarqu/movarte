@@ -13,7 +13,12 @@ let btn;
 let state = {
     background: { r: 255, g: 255, b: 255 },
     hatch: { r: 255, g: 255, b: 255, distance: 0 },
-    triangle: { r: 255, g: 255, b: 255, x: 0, y: 0 },
+    triangle: {
+        r: 255, g: 255, b: 255,
+        A: { x: 0, y: 0 },
+        B: { x: 0, y: 0 },
+        C: { x: 0, y: 0 }
+    },
     circle: { r: 255, g: 255, b: 255, radius: 0 },
 };
 
@@ -100,21 +105,25 @@ export default function zones(p) {
                     p.push();
                     let pelvisX = Math.round((rightHip.x + leftHip.x) / 2);
                     let pelvisY = Math.round((rightHip.y + leftHip.y) / 2);
-                    // traingle color picker
+                    // traingle color and position picker
+                    // color asociado rgb
                     state.triangle.r = Math.floor(leftElbow.y % 256);
                     state.triangle.g = Math.floor(rightElbow.y % 256);
                     state.triangle.b = Math.floor(leftShoulder.x % 256);
+                    state.triangle.A.x = rightShoulder.x;
+                    state.triangle.A.y = rightShoulder.y;
+                    state.triangle.B.x = leftShoulder.x;
+                    state.triangle.B.y = leftShoulder.y;
+                    state.triangle.C.x = pelvisY;
+                    state.triangle.C.y = pelvisY;
                     p.noFill();
                     p.stroke(p.color(state.triangle.r, state.triangle.g, state.triangle.b));
-                    p.strokeWeight(18);
+                    p.strokeWeight(Math.floor(width * 0.01));
                     p.triangle(rightShoulder.x, rightShoulder.y,
                         leftShoulder.x, leftShoulder.y,
                         pelvisX, pelvisY);
-                    p.triangle(rightShoulder.x + 130, rightShoulder.y + 50,
-                        leftShoulder.x + 130, leftShoulder.y + 50,
-                        pelvisX + 130, pelvisY + 50);
                     p.pop();
-                } // moving traignles layer
+                } // moving triangles layer
                 else if (d >= 120 && d < 200) {
                     p.push();
                     p.fill(state.triangle.r, state.triangle.g, state.triangle.b);
