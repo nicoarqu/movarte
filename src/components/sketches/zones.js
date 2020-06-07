@@ -1,4 +1,6 @@
+/* eslint-disable no-unused-vars */
 import ml5 from 'ml5';
+import tinycolor from "tinycolor2";
 import { circles, simpleLines } from '../shapes';
 
 let canvas;
@@ -11,15 +13,25 @@ let btn;
 
 // state with stored user info
 let state = {
-    background: { r: 255, g: 255, b: 255 },
-    hatch: { r: 255, g: 255, b: 255, distance: 0 },
+    background: {
+        color: { r: 255, g: 255, b: 255 },
+        tColor: tinycolor({ r: 255, g: 255, b: 255 }),
+    },
+    hatch: {
+        color: { r: 255, g: 255, b: 255 },
+        distance: 0
+    },
     triangle: {
-        r: 255, g: 255, b: 255,
+        color: { r: 255, g: 255, b: 255 },
+        tColor: tinycolor({ r: 255, g: 255, b: 255 }),
         A: { x: 0, y: 0 },
         B: { x: 0, y: 0 },
         C: { x: 0, y: 0 }
     },
-    circle: { r: 255, g: 255, b: 255, radius: 0 },
+    circle: {
+        color: { r: 255, g: 255, b: 255 },
+        radius: 0
+    },
 };
 
 const modelLoaded = () => console.log('poseNet ready');
@@ -83,16 +95,19 @@ export default function zones(p) {
                 p.fill(state.background.r, state.background.g, state.background.b);
                 p.circle(100, 100, 130); */
 
-                p.background(state.background.r, state.background.g, state.background.b, 140);
+                p.background(
+                    state.background.color.r, state.background.color.g, state.background.color.b, 140
+                );
 
                 let d = Math.round(shoulderDist / (height / 333));
                 // background layer
                 if (d < 60) {
                     p.push();
                     // background color picker
-                    state.background.r = Math.floor(leftElbow.y % 256);
-                    state.background.g = Math.floor(rightElbow.y % 256);
-                    state.background.b = Math.floor(leftShoulder.x % 256);
+                    state.background.color.r = Math.floor(leftElbow.y % 256);
+                    state.background.color.g = Math.floor(rightElbow.y % 256);
+                    state.background.color.b = Math.floor(leftShoulder.x % 256);
+                    state.background.tColor = tinycolor(state.background.color);
                     // instruction text
                     p.fill(state.background.r, state.background.g, state.background.b);
                     p.stroke(3);
@@ -105,11 +120,9 @@ export default function zones(p) {
                     p.push();
                     let pelvisX = Math.round((rightHip.x + leftHip.x) / 2);
                     let pelvisY = Math.round((rightHip.y + leftHip.y) / 2);
-                    // traingle color and position picker
+                    // triangle color and position picker
+                    state.triangle.tColor = state.background.tColor.complement();
                     // color asociado rgb
-                    state.triangle.r = Math.floor(leftElbow.y % 256);
-                    state.triangle.g = Math.floor(rightElbow.y % 256);
-                    state.triangle.b = Math.floor(leftShoulder.x % 256);
                     state.triangle.A.x = rightShoulder.x;
                     state.triangle.A.y = rightShoulder.y;
                     state.triangle.B.x = leftShoulder.x;
@@ -117,7 +130,7 @@ export default function zones(p) {
                     state.triangle.C.x = pelvisY;
                     state.triangle.C.y = pelvisY;
                     p.noFill();
-                    p.stroke(p.color(state.triangle.r, state.triangle.g, state.triangle.b));
+                    p.stroke(p.color(state.triangle.tColor.toHexString()));
                     p.strokeWeight(Math.floor(width * 0.01));
                     p.triangle(rightShoulder.x, rightShoulder.y,
                         leftShoulder.x, leftShoulder.y,
@@ -126,7 +139,7 @@ export default function zones(p) {
                 } // moving triangles layer
                 else if (d >= 120 && d < 200) {
                     p.push();
-                    p.fill(state.triangle.r, state.triangle.g, state.triangle.b);
+                    p.fill(state.triangle.tColor.toHexString());
                     for (let index = 0; index < 9; index++) {
                         let randomX = p.random(-50, 50);
                         let randomY = p.random(-80, 80);
@@ -136,8 +149,8 @@ export default function zones(p) {
                 }
                 else { // undefined layer
                     p.push();
-                    p.fill(state.triangle.r, state.triangle.g, state.triangle.b);
-                    p.stroke(p.color(state.background.r, state.background.g, state.background.b));
+                    p.fill(state.triangle.tColor.toHexString());
+                    p.stroke(p.color(state.triangle.tColor.toHexString()));
                     p.strokeWeight(16);
                     for (let i = 10; i < 40; i += 10) {
                         let bR = p.random(-d * 0.35, d * 0.55);
