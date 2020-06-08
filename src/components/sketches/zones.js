@@ -2,7 +2,7 @@
 import ml5 from 'ml5';
 import tinycolor from "tinycolor2";
 import { circles, simpleLines } from '../shapes';
-import { drawTriangle, setCircles, drawCircles } from "../../utils/p5Functions";
+import { drawTriangle, setCircles, drawCircles, drawSquares } from "../../utils/p5Functions";
 
 let canvas;
 let video;
@@ -22,6 +22,7 @@ let state = {
         color: { r: 255, g: 255, b: 255 },
         distance: 0
     },
+    squares: [],
     triangle: {
         color: { r: 255, g: 255, b: 255 },
         tColor: tinycolor({ r: 255, g: 255, b: 255 }),
@@ -40,7 +41,17 @@ const gotPoses = (poses) => {
 }
 
 const screenshot = (p) => {
-    setTimeout(p.saveFrames('imagen', 'png', 1, 1), 10000);
+    p.push();
+    p.translate(video.width, 0);
+    p.scale(-1, 1);
+    p.background(
+        state.background.color.r, state.background.color.g, state.background.color.b
+    );
+    drawSquares(p, state);
+    drawTriangle(p, state, width);
+    drawCircles(p, state);
+    p.saveCanvas('imagen', 'png');
+    p.pop();
 }
 
 export default function zones(p) {
@@ -99,7 +110,7 @@ export default function zones(p) {
 
                 let d = Math.round(shoulderDist / (height / 333));
                 // background layer
-                if (d < 58) {
+                if (d < 55) {
                     p.push();
                     // background color picker
                     state.background.color.r = Math.floor(leftElbow.y % 256);
@@ -113,9 +124,22 @@ export default function zones(p) {
                     p.text('Elige el color', 200, 150);
                     p.pop();
                 }
+                // mini squares
+                else if (d >= 55 && d < 65) {
+                    const squares = []
+                    const points = [rightKnee, rightHip, leftElbow];
+                    const triad = state.background.tColor.triad();
+                    points.forEach((point, index) => {
+                        p.fill(triad[index].toString());
+                        p.rect(point.x, point.y, 55, 55, 20);
+                        squares.push({ x: point.x, y: point.y, color: triad[index], edge: 55, round: 20 });
+                    });
+                    state.squares = squares;
+                }
                 // triangle layer
-                else if (d >= 58 && d < 70) {
+                else if (d >= 65 && d < 70) {
                     p.push();
+                    drawSquares(p, state);
                     // triangle color and position picker
                     state.triangle.tColor = state.background.tColor.complement();
                     state.triangle.A.x = rightShoulder.x;
@@ -127,8 +151,9 @@ export default function zones(p) {
                     drawTriangle(p, state, width);
                     p.pop();
                 } // moving circles
-                else if (d >= 70 && d < 100) {
+                else if (d >= 70 && d < 90) {
                     p.push();
+                    drawSquares(p, state);
                     drawTriangle(p, state, width);
                     // circles in upper body points, analog colors
                     state.circles = setCircles(p, state, pose, d);
@@ -136,6 +161,7 @@ export default function zones(p) {
                 }
                 else { // moving triangles layer
                     p.push();
+                    drawSquares(p, state);
                     drawTriangle(p, state, width);
                     drawCircles(p, state);
                     p.fill(state.triangle.tColor.toHexString());

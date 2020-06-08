@@ -39,3 +39,13 @@ export const drawCircles = (p, state) => {
     })
     p.pop();
 };
+
+export const drawSquares = (p, state) => {
+    p.push();
+    p.noStroke();
+    state.squares.forEach(square => {
+        p.fill(square.color.toHexString());
+        p.rect(square.x, square.y, square.edge, square.edge, square.round);
+    })
+    p.pop();
+};
