@@ -1,8 +1,6 @@
-/* eslint-disable no-unused-vars */
 import ml5 from 'ml5';
-import tinycolor from "tinycolor2";
-import { circles, simpleLines } from '../shapes';
-import { drawTriangle, setCircles, drawCircles, drawSquares } from "../../utils/p5Functions";
+import { p5Functions } from '../../utils/p5Functions';
+import { state } from '../../utils/initialState';
 
 let canvas;
 let video;
@@ -11,27 +9,6 @@ let pose;
 let height;
 let width;
 let btn;
-
-// state with stored user info
-let state = {
-    background: {
-        color: { r: 255, g: 255, b: 255 },
-        tColor: tinycolor({ r: 255, g: 255, b: 255 }),
-    },
-    hatch: {
-        color: { r: 255, g: 255, b: 255 },
-        distance: 0
-    },
-    squares: [],
-    triangle: {
-        color: { r: 255, g: 255, b: 255 },
-        tColor: tinycolor({ r: 255, g: 255, b: 255 }),
-        A: { x: 0, y: 0 },
-        B: { x: 0, y: 0 },
-        C: { x: 0, y: 0 }
-    },
-    circles: [],
-};
 
 const modelLoaded = () => console.log('poseNet ready');
 
@@ -47,9 +24,9 @@ const screenshot = (p) => {
     p.background(
         state.background.color.r, state.background.color.g, state.background.color.b
     );
-    drawSquares(p, state);
-    drawTriangle(p, state, width);
-    drawCircles(p, state);
+    p5Functions.drawSquares(p, state);
+    p5Functions.drawTriangle(p, state, width);
+    p5Functions.drawCircles(p, state);
     p.saveCanvas('imagen', 'png');
     p.pop();
 }
@@ -111,69 +88,34 @@ export default function zones(p) {
                 let d = Math.round(shoulderDist / (height / 333));
                 // background layer
                 if (d < 55) {
-                    p.push();
-                    // background color picker
-                    state.background.color.r = Math.floor(leftElbow.y % 256);
-                    state.background.color.g = Math.floor(rightElbow.y % 256);
-                    state.background.color.b = Math.floor(leftShoulder.x % 256);
-                    state.background.tColor = tinycolor(state.background.color);
-                    // instruction text
-                    p.fill(state.background.r, state.background.g, state.background.b);
-                    p.stroke(3);
-                    p.textSize(100);
-                    p.text('Elige el color', 200, 150);
-                    p.pop();
+                    p5Functions.setBackground(p, state, pose);
                 }
                 // mini squares
                 else if (d >= 55 && d < 65) {
-                    const squares = []
-                    const points = [rightKnee, rightHip, leftElbow];
-                    const triad = state.background.tColor.triad();
-                    points.forEach((point, index) => {
-                        p.fill(triad[index].toString());
-                        p.rect(point.x, point.y, 55, 55, 20);
-                        squares.push({ x: point.x, y: point.y, color: triad[index], edge: 55, round: 20 });
-                    });
-                    state.squares = squares;
+                    p5Functions.setSquares();
                 }
                 // triangle layer
                 else if (d >= 65 && d < 70) {
                     p.push();
-                    drawSquares(p, state);
+                    p5Functions.drawSquares(p, state);
                     // triangle color and position picker
-                    state.triangle.tColor = state.background.tColor.complement();
-                    state.triangle.A.x = rightShoulder.x;
-                    state.triangle.A.y = rightShoulder.y;
-                    state.triangle.B.x = leftShoulder.x;
-                    state.triangle.B.y = leftShoulder.y;
-                    state.triangle.C.x = Math.round((rightHip.x + leftHip.x) / 2);
-                    state.triangle.C.y = Math.round((rightHip.y + leftHip.y) / 2);
-                    drawTriangle(p, state, width);
+                    p5Functions.setTriangle(p, state, pose);
+                    p5Functions.drawTriangle(p, state, width);
                     p.pop();
                 } // moving circles
                 else if (d >= 70 && d < 90) {
                     p.push();
-                    drawSquares(p, state);
-                    drawTriangle(p, state, width);
-                    // circles in upper body points, analog colors
-                    state.circles = setCircles(p, state, pose, d);
+                    p5Functions.drawSquares(p, state);
+                    p5Functions.drawTriangle(p, state, width);
+                    p5Functions.setCircles(p, state, pose, d);
                     p.pop();
                 }
                 else { // moving triangles layer
                     p.push();
-                    drawSquares(p, state);
-                    drawTriangle(p, state, width);
-                    drawCircles(p, state);
-                    p.fill(state.triangle.tColor.toHexString());
-                    p.stroke(p.color(state.triangle.tColor.toHexString()));
-                    p.strokeWeight(16);
-                    for (let i = 10; i < 40; i += 10) {
-                        let bR = p.random(-d * 0.35, d * 0.55);
-                        let bX = rightEye.x - bR * i;
-                        let bY = rightEye.y - bR * i;
-                        p.translate(bX, bY);
-                        p.triangle(leftEye.x, leftEye.y, rightEye.x, rightEye.y, nose.x, nose.y);
-                    }
+                    p5Functions.drawSquares(p, state);
+                    p5Functions.drawTriangle(p, state, width);
+                    p5Functions.drawCircles(p, state);
+                    p5Functions.drawMovingTriangles(p, state, pose);
                     p.pop();
                 }
             }

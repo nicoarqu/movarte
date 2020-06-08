@@ -1,7 +1,7 @@
 export const circles = (state) => {
-  const shapeSize = Math.floor((state.dist / 2) * 0.8);
-  const position = state.dist / 2 - state.shapeSize / 2;
-  const weight = Math.floor(0.1 * state.dist);
+  const shapeSize = Math.floor((state.d / 2) * 0.8);
+  const position = state.d / 2 - state.shapeSize / 2;
+  const weight = Math.floor(0.1 * state.d);
 
   return {
     name: 'circles',
