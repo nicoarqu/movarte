@@ -92,7 +92,7 @@ export default function zones(p) {
                 }
                 // mini squares
                 else if (d >= 55 && d < 65) {
-                    p5Functions.setSquares(p, state, pose);
+                    p5Functions.setSquares();
                 }
                 // triangle layer
                 else if (d >= 65 && d < 70) {
