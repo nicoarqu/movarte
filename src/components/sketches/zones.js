@@ -2,7 +2,7 @@
 import ml5 from 'ml5';
 import tinycolor from "tinycolor2";
 import { circles, simpleLines } from '../shapes';
-import { drawTriangle } from "../../utils/p5Functions";
+import { drawTriangle, setCircles, drawCircles } from "../../utils/p5Functions";
 
 let canvas;
 let video;
@@ -29,10 +29,7 @@ let state = {
         B: { x: 0, y: 0 },
         C: { x: 0, y: 0 }
     },
-    circle: {
-        color: { r: 255, g: 255, b: 255 },
-        radius: 0
-    },
+    circles: [],
 };
 
 const modelLoaded = () => console.log('poseNet ready');
@@ -121,7 +118,6 @@ export default function zones(p) {
                     p.push();
                     // triangle color and position picker
                     state.triangle.tColor = state.background.tColor.complement();
-                    // color asociado rgb
                     state.triangle.A.x = rightShoulder.x;
                     state.triangle.A.y = rightShoulder.y;
                     state.triangle.B.x = leftShoulder.x;
@@ -130,20 +126,18 @@ export default function zones(p) {
                     state.triangle.C.y = Math.round((rightHip.y + leftHip.y) / 2);
                     drawTriangle(p, state, width);
                     p.pop();
-                } // moving triangles layer
-                else if (d >= 70 && d < 200) {
+                } // moving circles
+                else if (d >= 70 && d < 100) {
                     p.push();
                     drawTriangle(p, state, width);
-                    for (let index = 0; index < 9; index++) {
-                        let randomX = p.random(-50, 50);
-                        let randomY = p.random(-80, 80);
-                        p.circle(nose.x + randomX * index, nose.y + randomY * index, 100);
-                    }
+                    // circles in upper body points, analog colors
+                    state.circles = setCircles(p, state, pose, d);
                     p.pop();
                 }
-                else { // undefined layer
+                else { // moving triangles layer
                     p.push();
                     drawTriangle(p, state, width);
+                    drawCircles(p, state);
                     p.fill(state.triangle.tColor.toHexString());
                     p.stroke(p.color(state.triangle.tColor.toHexString()));
                     p.strokeWeight(16);
