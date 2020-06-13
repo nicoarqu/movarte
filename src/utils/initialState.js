@@ -19,4 +19,19 @@ export let state = {
         C: { x: 0, y: 0 }
     },
     circles: [],
+    circleChain: {
+        leftE: [],
+        rightE: [],
+        leftW: [],
+        rightW: [],
+    },
+    faceCircles: [],
+};
+
+export let position = {
+    dist1: 55,
+    dist2: 65,
+    dist3: 70,
+    dist4: 100,
+    dist5: 200,
 };

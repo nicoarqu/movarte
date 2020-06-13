@@ -1,7 +1,7 @@
 export const setSquares = (p, state, pose) => {
     const { rightKnee, rightHip, leftElbow } = pose;
     p.push();
-    const squares = []
+    const squares = [];
     const points = [rightKnee, rightHip, leftElbow];
     const triad = state.background.tColor.triad();
     points.forEach((point, index) => {

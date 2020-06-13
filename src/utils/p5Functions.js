@@ -2,6 +2,7 @@ import tinycolor from 'tinycolor2';
 import { setCircles, drawCircles } from './shapeFunctions/circles';
 import { setTriangle, drawTriangle, drawMovingTriangles } from './shapeFunctions/triangles';
 import { setSquares, drawSquares } from './shapeFunctions/squares';
+import { setCircleChain, drawCircleChain } from "./shapeFunctions/circleChain";
 
 const setBackground = (p, state, pose) => {
     const { leftElbow, rightElbow, leftShoulder } = pose;
@@ -13,9 +14,6 @@ const setBackground = (p, state, pose) => {
     state.background.tColor = tinycolor(state.background.color);
     // instruction text
     p.fill(state.background.r, state.background.g, state.background.b);
-    p.stroke(3);
-    p.textSize(100);
-    p.text('Elige el color', 200, 150);
     p.pop();
 }
 
@@ -27,5 +25,7 @@ export const p5Functions = {
     drawTriangle,
     setSquares,
     drawSquares,
+    setCircleChain,
+    drawCircleChain,
     drawMovingTriangles
 }

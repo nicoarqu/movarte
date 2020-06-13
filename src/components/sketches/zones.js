@@ -1,6 +1,6 @@
 import ml5 from 'ml5';
 import { p5Functions } from '../../utils/p5Functions';
-import { state } from '../../utils/initialState';
+import { state, position } from '../../utils/initialState';
 
 let canvas;
 let video;
@@ -19,14 +19,13 @@ const gotPoses = (poses) => {
 
 const screenshot = (p) => {
     p.push();
-    p.translate(video.width, 0);
-    p.scale(-1, 1);
     p.background(
         state.background.color.r, state.background.color.g, state.background.color.b
     );
     p5Functions.drawSquares(p, state);
     p5Functions.drawTriangle(p, state, width);
-    p5Functions.drawCircles(p, state);
+    p5Functions.drawCircleChain(p, state);
+    p5Functions.drawMovingTriangles(p, state, pose);
     p.saveCanvas('imagen', 'png');
     p.pop();
 }
@@ -57,29 +56,15 @@ export default function zones(p) {
 
     p.draw = () => {
         if (canvas) {
-            /* set mirrored version of video capture and canvas
+            // set mirrored version of video capture and canvas
             p.translate(video.width, 0);
-            p.scale(-1, 1); */
+            p.scale(-1, 1);
             p.image(video, 0, 0, width, height);
 
             if (pose) {
                 // pose keypoints
-                const {
-                    nose,
-                    rightEye, leftEye,
-                    rigthEar, leftEar,
-                    rightShoulder, leftShoulder,
-                    rightElbow, leftElbow,
-                    rightWrist, leftWrist,
-                    rightHip, leftHip,
-                    rightKnee, leftKnee,
-                    rightAnkle, leftAnkle
-                } = pose;
-
+                const { rightShoulder, leftShoulder } = pose;
                 let shoulderDist = p.dist(rightShoulder.x, rightShoulder.y, leftShoulder.x, leftShoulder.y);
-                /* background color circle
-                p.fill(state.background.r, state.background.g, state.background.b);
-                p.circle(100, 100, 130); */
 
                 p.background(
                     state.background.color.r, state.background.color.g, state.background.color.b, 140
@@ -87,15 +72,15 @@ export default function zones(p) {
 
                 let d = Math.round(shoulderDist / (height / 333));
                 // background layer
-                if (d < 55) {
+                if (d < position.dist1) {
                     p5Functions.setBackground(p, state, pose);
                 }
                 // mini squares
-                else if (d >= 55 && d < 65) {
+                else if (d >= position.dist1 && d < position.dist2) {
                     p5Functions.setSquares(p, state, pose);
                 }
                 // triangle layer
-                else if (d >= 65 && d < 70) {
+                else if (d >= position.dist2 && d < position.dist3) {
                     p.push();
                     p5Functions.drawSquares(p, state);
                     // triangle color and position picker
@@ -103,20 +88,30 @@ export default function zones(p) {
                     p5Functions.drawTriangle(p, state, width);
                     p.pop();
                 } // moving circles
-                else if (d >= 70 && d < 90) {
+                else if (d >= position.dist3 && d < position.dist4) {
                     p.push();
                     p5Functions.drawSquares(p, state);
                     p5Functions.drawTriangle(p, state, width);
-                    p5Functions.setCircles(p, state, pose, d);
+                    // p5Functions.setCircles(p, state, pose, d);
+                    p5Functions.setCircleChain(p, state, pose);
+                    p5Functions.drawCircleChain(p, state);
                     p.pop();
                 }
-                else { // moving triangles layer
+                else if (d >= position.dist4 && d < position.dist5) {
                     p.push();
                     p5Functions.drawSquares(p, state);
                     p5Functions.drawTriangle(p, state, width);
-                    p5Functions.drawCircles(p, state);
+                    // p5Functions.drawCircles(p, state);
+                    p5Functions.drawCircleChain(p, state);
                     p5Functions.drawMovingTriangles(p, state, pose);
                     p.pop();
+                }
+                else {
+                    p.push();
+                    p5Functions.drawSquares(p, state);
+                    p5Functions.drawTriangle(p, state, width);
+                    p5Functions.drawCircleChain(p, state);
+                    p5Functions.drawMovingTriangles(p, state, pose);
                 }
             }
         }
