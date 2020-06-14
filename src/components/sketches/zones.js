@@ -23,9 +23,11 @@ const screenshot = (p) => {
         state.background.color.r, state.background.color.g, state.background.color.b
     );
     p5Functions.drawSquares(p, state);
+
+    p5Functions.drawArmLines(p, state);
     p5Functions.drawTriangle(p, state, width);
     p5Functions.drawCircleChain(p, state);
-    p5Functions.drawMovingTriangles(p, state, pose);
+    p5Functions.drawFaceCircles(p, state);
     p.saveCanvas('imagen', 'png');
     p.pop();
 }
@@ -78,11 +80,15 @@ export default function zones(p) {
                 // mini squares
                 else if (d >= position.dist1 && d < position.dist2) {
                     p5Functions.setSquares(p, state, pose);
+                    p5Functions.drawSquares(p, state);
+                    p5Functions.setArmLines(p, state, pose, d);
+                    p5Functions.drawArmLines(p, state);
                 }
                 // triangle layer
                 else if (d >= position.dist2 && d < position.dist3) {
                     p.push();
                     p5Functions.drawSquares(p, state);
+                    p5Functions.drawArmLines(p, state);
                     // triangle color and position picker
                     p5Functions.setTriangle(p, state, pose);
                     p5Functions.drawTriangle(p, state, width);
@@ -91,8 +97,8 @@ export default function zones(p) {
                 else if (d >= position.dist3 && d < position.dist4) {
                     p.push();
                     p5Functions.drawSquares(p, state);
+                    p5Functions.drawArmLines(p, state);
                     p5Functions.drawTriangle(p, state, width);
-                    // p5Functions.setCircles(p, state, pose, d);
                     p5Functions.setCircleChain(p, state, pose);
                     p5Functions.drawCircleChain(p, state);
                     p.pop();
@@ -100,18 +106,20 @@ export default function zones(p) {
                 else if (d >= position.dist4 && d < position.dist5) {
                     p.push();
                     p5Functions.drawSquares(p, state);
+                    p5Functions.drawArmLines(p, state);
                     p5Functions.drawTriangle(p, state, width);
-                    // p5Functions.drawCircles(p, state);
                     p5Functions.drawCircleChain(p, state);
-                    p5Functions.drawMovingTriangles(p, state, pose);
+                    p5Functions.setFaceCircles(p, state, pose);
+                    p5Functions.drawFaceCircles(p, state);
                     p.pop();
                 }
                 else {
                     p.push();
                     p5Functions.drawSquares(p, state);
+                    p5Functions.drawArmLines(p, state);
                     p5Functions.drawTriangle(p, state, width);
                     p5Functions.drawCircleChain(p, state);
-                    p5Functions.drawMovingTriangles(p, state, pose);
+                    p5Functions.drawFaceCircles(p, state);
                 }
             }
         }

@@ -19,17 +19,3 @@ export const drawTriangle = (p, state, width) => {
         state.triangle.C.x, state.triangle.C.y
     );
 }
-
-export const drawMovingTriangles = (p, state, pose, d) => {
-    const { rightEye, leftEye, nose } = pose;
-    p.fill(state.triangle.tColor.toHexString());
-    p.stroke(p.color(state.triangle.tColor.toHexString()));
-    p.strokeWeight(16);
-    for (let i = 10; i < 40; i += 10) {
-        let bR = p.random(-d * 0.35, d * 0.55);
-        let bX = rightEye.x - bR * i;
-        let bY = rightEye.y - bR * i;
-        p.translate(bX, bY);
-        p.triangle(leftEye.x, leftEye.y, rightEye.x, rightEye.y, nose.x, nose.y);
-    }
-}

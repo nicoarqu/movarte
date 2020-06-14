@@ -1,7 +1,8 @@
 // circles in upper body points with analog colors
 export const setCircleChain = (p, state, pose) => {
     const { rightElbow, leftElbow, rightWrist, leftWrist, } = pose;
-    const analogousColors = state.triangle.tColor.analogous(6, 15);
+    const { tColor } = state.triangle;
+    const analogousColors = tColor.spin(90).analogous(6, 15);
     p.push();
     p.noStroke();
     // por cada codo, quitar ultimo elemento, agregar nuevo con random color o radio

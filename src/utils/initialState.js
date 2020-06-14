@@ -6,9 +6,11 @@ export let state = {
         color: { r: 255, g: 255, b: 255 },
         tColor: tinycolor({ r: 255, g: 255, b: 255 }),
     },
-    hatch: {
-        color: { r: 255, g: 255, b: 255 },
-        distance: 0
+    armLines: {
+        left: [],
+        right: [],
+        colorL: tinycolor({ r: 255, g: 255, b: 255 }),
+        colorR: tinycolor({ r: 255, g: 255, b: 255 }),
     },
     squares: [],
     triangle: {

@@ -1,8 +1,10 @@
 import tinycolor from 'tinycolor2';
 import { setCircles, drawCircles } from './shapeFunctions/circles';
-import { setTriangle, drawTriangle, drawMovingTriangles } from './shapeFunctions/triangles';
+import { setTriangle, drawTriangle } from './shapeFunctions/triangles';
 import { setSquares, drawSquares } from './shapeFunctions/squares';
 import { setCircleChain, drawCircleChain } from "./shapeFunctions/circleChain";
+import { setFaceCircles, drawFaceCircles } from "./shapeFunctions/faceCircle";
+import { setArmLines, drawArmLines } from "./shapeFunctions/armLines";
 
 const setBackground = (p, state, pose) => {
     const { leftElbow, rightElbow, leftShoulder } = pose;
@@ -27,5 +29,8 @@ export const p5Functions = {
     drawSquares,
     setCircleChain,
     drawCircleChain,
-    drawMovingTriangles
+    setFaceCircles,
+    drawFaceCircles,
+    setArmLines,
+    drawArmLines,
 }
