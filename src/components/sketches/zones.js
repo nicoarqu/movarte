@@ -9,6 +9,7 @@ let pose;
 let height;
 let width;
 let btn;
+let info;
 
 const modelLoaded = () => console.log('poseNet ready');
 
@@ -23,7 +24,6 @@ const screenshot = (p) => {
         state.background.color.r, state.background.color.g, state.background.color.b
     );
     p5Functions.drawSquares(p, state);
-
     p5Functions.drawArmLines(p, state);
     p5Functions.drawTriangle(p, state, width);
     p5Functions.drawCircleChain(p, state);
@@ -49,10 +49,12 @@ export default function zones(p) {
         p.angleMode(p.DEGREES);
         p.rectMode(p.CENTER);
         p.frameRate(24);
+        // info text
+        info = document.getElementById("title");
+        console.log(info);
+        info.textContent = "Mueve tu cuerpo";
         // screenshot button
-        btn = document.createElement("button");
-        btn.textContent = "Tomar pantallazo";
-        document.body.appendChild(btn);
+        btn = document.getElementById("btn-screenshot");
         btn.onclick = () => screenshot(p);
     };
 
@@ -71,21 +73,25 @@ export default function zones(p) {
                 p.background(
                     state.background.color.r, state.background.color.g, state.background.color.b, 140
                 );
-
                 let d = Math.round(shoulderDist / (height / 333));
                 // background layer
                 if (d < position.dist1) {
+                    info.textContent = "Elige el color de fondo";
                     p5Functions.setBackground(p, state, pose);
                 }
                 // mini squares
                 else if (d >= position.dist1 && d < position.dist2) {
+                    p.push();
+                    info.textContent = "Elige los cuadrados";
                     p5Functions.setSquares(p, state, pose);
                     p5Functions.drawSquares(p, state);
                     p5Functions.setArmLines(p, state, pose, d);
                     p5Functions.drawArmLines(p, state);
+                    p.pop();
                 }
                 // triangle layer
                 else if (d >= position.dist2 && d < position.dist3) {
+                    info.textContent = "Mueve tus brazos y pies";
                     p.push();
                     p5Functions.drawSquares(p, state);
                     p5Functions.drawArmLines(p, state);
@@ -95,6 +101,7 @@ export default function zones(p) {
                     p.pop();
                 } // moving circles
                 else if (d >= position.dist3 && d < position.dist4) {
+                    info.textContent = "Mueve tus brazos";
                     p.push();
                     p5Functions.drawSquares(p, state);
                     p5Functions.drawArmLines(p, state);
@@ -104,6 +111,7 @@ export default function zones(p) {
                     p.pop();
                 }
                 else if (d >= position.dist4 && d < position.dist5) {
+                    info.textContent = "Dibuja con tu cara";
                     p.push();
                     p5Functions.drawSquares(p, state);
                     p5Functions.drawArmLines(p, state);
@@ -120,6 +128,7 @@ export default function zones(p) {
                     p5Functions.drawTriangle(p, state, width);
                     p5Functions.drawCircleChain(p, state);
                     p5Functions.drawFaceCircles(p, state);
+                    p.pop();
                 }
             }
         }
