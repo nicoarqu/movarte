@@ -7,7 +7,14 @@ export const Home = () => {
     <div>
       <h2 id="title">Mueve tu cuerpo</h2>
       <P5Wrapper sketch={zones}></P5Wrapper>
-      <button id="btn-screenshot">Guarda tu imagen</button>
+      <div className="button-group">
+        <a href="/" className="btn" id="btn-screenshot">
+          Guarda tu imagen
+        </a>
+        <a href="/" className="btn" id="survey">
+          Cuentanos tu experiencia
+        </a>
+      </div>
     </div>
   );
 };

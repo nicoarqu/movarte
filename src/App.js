@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  NavLink
 } from "react-router-dom";
 import { Home } from "./views/home";
 import { About } from "./views/about";
@@ -14,16 +14,16 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <nav>
+        <nav className="nav-bar">
           <ul>
             <li>
-              <Link to="/">Inicio</Link>
+              <NavLink exact to="/">Inicio</NavLink>
             </li>
             <li>
-              <Link to="/about">Acerca de</Link>
+              <NavLink to="/about">Acerca de</NavLink>
             </li>
             <li>
-              <Link to="/gallery">Galería</Link>
+              <NavLink to="/gallery">Galería</NavLink>
             </li>
           </ul>
         </nav>
