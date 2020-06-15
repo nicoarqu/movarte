@@ -13,13 +13,14 @@ export let state = {
         colorR: tinycolor({ r: 255, g: 255, b: 255 }),
     },
     squares: [],
+    faceTriangles: [],
     triangle: {
         color: { r: 255, g: 255, b: 255 },
         tColor: tinycolor({ r: 255, g: 255, b: 255 }),
         A: { x: 0, y: 0 },
         B: { x: 0, y: 0 },
         C: { x: 0, y: 0 },
-        children: [],
+        stroke: 1,
     },
     circles: [],
     circleChain: {
@@ -35,6 +36,6 @@ export let position = {
     dist1: 55,
     dist2: 65,
     dist3: 75,
-    dist4: 100,
-    dist5: 200,
+    dist4: 90,
+    dist5: 150,
 };

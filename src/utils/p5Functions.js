@@ -5,18 +5,14 @@ import { setSquares, drawSquares } from './shapeFunctions/squares';
 import { setCircleChain, drawCircleChain } from "./shapeFunctions/circleChain";
 import { setFaceCircles, drawFaceCircles } from "./shapeFunctions/faceCircle";
 import { setArmLines, drawArmLines } from "./shapeFunctions/armLines";
+import { setFaceTriangles, drawFaceTriangles } from "./shapeFunctions/faceTriangle";
 
 const setBackground = (p, state, pose) => {
     const { leftElbow, rightElbow, leftShoulder } = pose;
-    p.push();
-    // background color picker
     state.background.color.r = Math.floor(leftElbow.y % 256);
     state.background.color.g = Math.floor(rightElbow.y % 256);
     state.background.color.b = Math.floor(leftShoulder.x % 256);
     state.background.tColor = tinycolor(state.background.color);
-    // instruction text
-    p.fill(state.background.r, state.background.g, state.background.b);
-    p.pop();
 }
 
 export const p5Functions = {
@@ -33,4 +29,6 @@ export const p5Functions = {
     drawFaceCircles,
     setArmLines,
     drawArmLines,
+    setFaceTriangles,
+    drawFaceTriangles,
 }
