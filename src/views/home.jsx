@@ -8,10 +8,10 @@ export const Home = () => {
       <h2 id="title">Mueve tu cuerpo</h2>
       <P5Wrapper sketch={zones}></P5Wrapper>
       <div className="button-group">
-        <a href="/" className="btn" id="btn-screenshot">
+        <a href="#" className="btn" id="btn-screenshot">
           Guarda tu imagen
         </a>
-        <a href="/" className="btn" id="survey">
+        <a href="#" className="btn" id="survey">
           Cuentanos tu experiencia
         </a>
       </div>
