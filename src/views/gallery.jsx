@@ -1,18 +1,18 @@
 import React from 'react';
+import { images } from '../assets/pics';
 
 export const Gallery = () => {
-  const images = [1, 2, 3];
   return (
     <div>
       <h2>Explora la galería de imágenes</h2>
       <p>Puedes lograr esto y más</p>
       <div className="gallery-container">
         {images.map((img) => (
-          <div className="responsive" key={img}>
+          <div className="responsive" key={img.id}>
             <div className="gallery">
-              <a target="_blank" href="img_5terre.jpg">
+              <a target="_blank" rel="noopener noreferrer" href={img.ref}>
                 <img
-                  src="https://www.w3schools.com/css/img_5terre.jpg"
+                  src={img.ref}
                   alt="Cinque Terre"
                   width="600"
                   height="400"
