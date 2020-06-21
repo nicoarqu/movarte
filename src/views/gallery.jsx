@@ -18,7 +18,7 @@ export const Gallery = () => {
                   height="400"
                 />
               </a>
-              <div className="desc">Add a description of the image here</div>
+              <div className="desc"></div>
             </div>
           </div>
         ))}

@@ -11,7 +11,12 @@ export const Home = () => {
         <a href="#" className="btn" id="btn-screenshot">
           Guarda tu imagen
         </a>
-        <a href="#" className="btn" id="survey">
+        <a
+          href={process.env.REACT_APP_FORM}
+          className="btn"
+          id="survey"
+          rel="noopener noreferrer"
+          target="_blank">
           Cuentanos tu experiencia
         </a>
       </div>

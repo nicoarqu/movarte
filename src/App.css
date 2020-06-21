@@ -47,7 +47,7 @@ html {
   }
 }
 
-a.btn {
+.btn {
   padding: 0.8em 1.5em;
   border: 0.16em solid rgb(10, 17, 51);
   margin: 0 0.3em 0.3em 0;
