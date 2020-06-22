@@ -12,7 +12,7 @@ export const Home = () => {
           Guarda tu imagen
         </a>
         <a
-          href={process.env.REACT_APP_FORM}
+          href={`${process.env.REACT_APP_FORM}`}
           className="btn"
           id="survey"
           rel="noopener noreferrer"

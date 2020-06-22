@@ -125,6 +125,8 @@ export default function zones(p) {
                     p5Functions.drawFaceCircles(p, state);
                     p.pop();
                 }
+                // borrar esto al final
+                info.textContent = d;
             }
         }
     };

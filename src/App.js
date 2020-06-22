@@ -20,7 +20,7 @@ function App() {
               <NavLink exact to="/">Inicio</NavLink>
             </li>
             <li>
-              <NavLink to="/about">Acerca de</NavLink>
+              <NavLink to="/about">¿Cómo funciona?</NavLink>
             </li>
             <li>
               <NavLink to="/gallery">Galería</NavLink>

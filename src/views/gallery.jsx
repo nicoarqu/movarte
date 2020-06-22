@@ -13,7 +13,7 @@ export const Gallery = () => {
               <a target="_blank" rel="noopener noreferrer" href={img.ref}>
                 <img
                   src={img.ref}
-                  alt="Cinque Terre"
+                  alt="Creación abstracta"
                   width="600"
                   height="400"
                 />
@@ -23,6 +23,14 @@ export const Gallery = () => {
           </div>
         ))}
       </div>
+      <div class="clearfix"></div>
+      <a
+        href={`${process.env.REACT_APP_IMG_FORM}`}
+        className="btn"
+        rel="noopener noreferrer"
+        target="_blank">
+        Sube tus creaciones
+      </a>
     </div>
   );
 };

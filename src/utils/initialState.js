@@ -1,22 +1,28 @@
 import tinycolor from "tinycolor2";
 
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+const initColorRandom = { r: getRndInteger(0, 256), g: getRndInteger(0, 256), b: getRndInteger(0, 256) };
+
 // state with stored user info
 export let state = {
     background: {
-        color: { r: 255, g: 255, b: 255 },
-        tColor: tinycolor({ r: 255, g: 255, b: 255 }),
+        color: initColorRandom,
+        tColor: tinycolor(initColorRandom),
     },
     armLines: {
         left: [],
         right: [],
-        colorL: tinycolor({ r: 255, g: 255, b: 255 }),
-        colorR: tinycolor({ r: 255, g: 255, b: 255 }),
+        colorL: tinycolor(initColorRandom),
+        colorR: tinycolor(initColorRandom),
     },
     squares: [],
     faceTriangles: [],
     triangle: {
-        color: { r: 255, g: 255, b: 255 },
-        tColor: tinycolor({ r: 255, g: 255, b: 255 }),
+        color: initColorRandom,
+        tColor: tinycolor(initColorRandom),
         A: { x: 0, y: 0 },
         B: { x: 0, y: 0 },
         C: { x: 0, y: 0 },
@@ -33,9 +39,9 @@ export let state = {
 };
 
 export let position = {
-    dist1: 58,
-    dist2: 72,
-    dist3: 86,
-    dist4: 100,
-    dist5: 160,
+    dist1: 62,
+    dist2: 70,
+    dist3: 85,
+    dist4: 120,
+    dist5: 200,
 };
