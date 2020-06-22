@@ -39,9 +39,9 @@ export let state = {
 };
 
 export let position = {
-    dist1: 62,
-    dist2: 70,
-    dist3: 85,
-    dist4: 120,
-    dist5: 200,
+    dist1: 65,
+    dist2: 75,
+    dist3: 90,
+    dist4: 125,
+    dist5: 210,
 };

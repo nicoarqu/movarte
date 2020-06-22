@@ -48,7 +48,7 @@ export default function zones(p) {
         // canvas configuration
         p.angleMode(p.DEGREES);
         p.rectMode(p.CENTER);
-        p.frameRate(24);
+        p.frameRate(30);
         // info text
         info = document.getElementById("title");
         info.textContent = "Mueve tu cuerpo";
@@ -125,8 +125,6 @@ export default function zones(p) {
                     p5Functions.drawFaceCircles(p, state);
                     p.pop();
                 }
-                // borrar esto al final
-                info.textContent = d;
             }
         }
     };
