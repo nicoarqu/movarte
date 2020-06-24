@@ -4,8 +4,7 @@ import { images } from '../assets/pics';
 export const Gallery = () => {
   return (
     <div>
-      <h2>Explora la galería de imágenes</h2>
-      <p>Puedes lograr esto y más</p>
+      <h2>Explora los resultados de otras personas</h2>
       <div className="gallery-container">
         {images.map((img) => (
           <div className="responsive" key={img.id}>
@@ -18,19 +17,20 @@ export const Gallery = () => {
                   height="400"
                 />
               </a>
-              <div className="desc"></div>
             </div>
           </div>
         ))}
       </div>
-      <div class="clearfix"></div>
-      <a
-        href={`${process.env.REACT_APP_IMG_FORM}`}
-        className="btn"
-        rel="noopener noreferrer"
-        target="_blank">
-        Sube tus creaciones
-      </a>
+      <div className="clearfix"></div>
+      <div className="button-group">
+        <a
+          href={`${process.env.REACT_APP_IMG_FORM}`}
+          className="btn"
+          rel="noopener noreferrer"
+          target="_blank">
+          Sube tus creaciones
+        </a>
+      </div>
     </div>
   );
 };

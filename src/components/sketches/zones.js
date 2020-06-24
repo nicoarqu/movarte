@@ -39,6 +39,14 @@ export default function zones(p) {
         width = height * 4 / 3;
         // video set in canvas using user webcam
         canvas = p.createCanvas(width, height);
+        const texto = `Cargando...${'\n'}Recuerda activar tu cámara`;
+        console.log(texto);
+        p.push();
+        p.textSize(20);
+        p.textStyle(p.BOLD);
+        p.fill(0);
+        p.text(texto, width / 2 - 100, height / 2 - 20);
+        p.pop();
         video = p.createCapture(p.VIDEO);
         video.size(width, height);
         video.hide();
@@ -58,7 +66,7 @@ export default function zones(p) {
     };
 
     p.draw = () => {
-        if (canvas) {
+        if (video) {
             // set mirrored version of video capture and canvas
             p.translate(video.width, 0);
             p.scale(-1, 1);
@@ -126,6 +134,15 @@ export default function zones(p) {
                     p.pop();
                 }
             }
+        } else {
+            const texto = `Cargando...
+            Recuerda activar tu cámara`;
+            console.log(texto);
+            p.push();
+            p.textSize(32);
+            p.fill(100);
+            p.text(texto, width / 2, height / 2);
+            p.pop();
         }
     };
 }

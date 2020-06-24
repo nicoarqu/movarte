@@ -47,30 +47,6 @@ html {
   }
 }
 
-.btn {
-  padding: 0.8em 1.5em;
-  border: 0.16em solid rgb(10, 17, 51);
-  margin: 0 0.3em 0.3em 0;
-  box-sizing: border-box;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-family: sans-serif;
-  font-weight: 400;
-  color: #050a33;
-  text-align: center;
-  transition: all 0.15s;
-  border-radius: 6px;
-}
-
-#btn-screenshot:hover {
-  color: #109efd;
-  border-color: #109efd;
-}
-
-#survey:hover {
-  color: #109efd;
-  border-color: #109efd;
-}
 nav.nav-bar {
   width: 100%;
   padding: 0;
@@ -104,15 +80,49 @@ nav.nav-bar ul li a {
 .button-group {
   margin-top: 0.75rem;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+}
+
+.btn {
+  display: table;
+  padding: 0.8em 1.5em;
+  border: 0.16em solid rgb(10, 17, 51);
+  margin: 0 0.3em 0.3em 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-family: sans-serif;
+  font-weight: 400;
+  color: #050a33;
+  text-align: center;
+  transition: all 0.15s;
+  border-radius: 6px;
+}
+
+#btn-screenshot:hover {
+  color: #109efd;
+  border-color: #109efd;
+}
+#survey {
+  margin-left: 1.5rem;
+}
+
+#survey:hover {
+  color: #109efd;
+  border-color: #109efd;
+}
+
+div.gallery-container {
+  margin: 0.3rem 1rem;
 }
 
 div.gallery {
   border: 1px solid #ccc;
   box-sizing: border-box;
+  margin: 0.5rem 0;
 }
 
 div.gallery:hover {
@@ -156,4 +166,15 @@ div.desc {
   content: '';
   display: table;
   clear: both;
+}
+
+#title,
+#guide {
+  margin: 0.5rem 0;
+}
+
+.info {
+  text-align: justify;
+  margin: 0 auto;
+  width: 70%;
 }
