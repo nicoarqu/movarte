@@ -145,4 +145,11 @@ export default function zones(p) {
             p.pop();
         }
     };
+
+    p.mousePressed = () => {
+        if (p.mouseX > 0 && p.mouseX < width && p.mouseY > 0 && p.mouseY < height) {
+            let fs = p.fullscreen();
+            p.fullscreen(!fs);
+        }
+    };
 }

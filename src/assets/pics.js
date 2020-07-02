@@ -27,4 +27,8 @@ export const images = [
         id: 7,
         ref: `${process.env.REACT_APP_PICTURE_LINK}07/imagen.png`
     },
+    {
+        id: 8,
+        ref: `${process.env.REACT_APP_PICTURE_LINK}08/imagen.png`
+    },
 ];
