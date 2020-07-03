@@ -31,4 +31,36 @@ export const images = [
         id: 8,
         ref: `${process.env.REACT_APP_PICTURE_LINK}08/imagen.png`
     },
+    {
+        id: 9,
+        ref: `${process.env.REACT_APP_PICTURE_LINK}09/imagen.png`
+    },
+    {
+        id: 10,
+        ref: `${process.env.REACT_APP_PICTURE_LINK}10/imagen.png`
+    },
+    {
+        id: 11,
+        ref: `${process.env.REACT_APP_PICTURE_LINK}11/imagen.png`
+    },
+    {
+        id: 12,
+        ref: `${process.env.REACT_APP_PICTURE_LINK}12/imagen.png`
+    },
+    {
+        id: 13,
+        ref: `${process.env.REACT_APP_PICTURE_LINK}13/imagen.png`
+    },
+    {
+        id: 14,
+        ref: `${process.env.REACT_APP_PICTURE_LINK}14/imagen.png`
+    },
+    {
+        id: 15,
+        ref: `${process.env.REACT_APP_PICTURE_LINK}15/imagen.png`
+    },
+    {
+        id: 16,
+        ref: `${process.env.REACT_APP_PICTURE_LINK}16/imagen.png`
+    },
 ];
